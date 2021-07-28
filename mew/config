@@ -1,0 +1,26 @@
+structure:
+  structureSettings:
+    files:
+      - development/code/.gitkeep
+      - development/data/interim/.gitkeep
+      - development/data/processed/.gitkeep
+      - development/data/raw/.gitkeep
+      - development/documentation/.gitkeep
+      - development/testing/.gitkeep
+      - validation/documentation/.gitkeep
+      - validation/testing/.gitkeep
+      - validation/initial_validation/code/.gitkeep
+      - validation/initial_validation/data/interim/.gitkeep
+      - validation/initial_validation/data/processed/.gitkeep
+      - validation/initial_validation/data/raw/.gitkeep
+      - mew/pandoc-templates/.gitkeep
+      - .gitignore
+  modelOrganization:
+    - Risk
+    - Finance
+  modelClass:
+    - NowCasting
+    - CCAR
+  modelLanguage:
+    - Python
+    - R
