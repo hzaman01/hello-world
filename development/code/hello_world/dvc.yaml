@@ -1,0 +1,72 @@
+stages:
+  data_loading:
+    cmd: python3 data_loading.py ../../data/raw ../../data/interim
+    deps:
+    - data_loading.py
+    - ../../data/raw
+    params:
+    - data_raw.size_cutoff
+    outs:
+    - ../../data/interim/sample_dataset_saved.csv:
+        cache: false
+        
+  data_sampling:
+    cmd: python3 data_sampling.py ../../data/interim ../../data/interim
+    deps:
+    - data_sampling.py
+    - ../../data/interim/sample_dataset_saved.csv
+    params:
+    - sampling.test_size
+    outs:
+    - ../../data/interim/X_train.csv:
+        cache: false
+    - ../../data/interim/X_test.csv:
+        cache: false
+    - ../../data/interim/y_train.csv:
+        cache: false
+    - ../../data/interim/y_test.csv:
+        cache: false
+
+        
+  model_training:
+    cmd: python3 model_development.py ../../data/interim ../../data/processed
+    deps:
+    - model_development.py
+    - ../../data/interim/X_train.csv
+    - ../../data/interim/X_test.csv
+    - ../../data/interim/y_train.csv
+    - ../../data/interim/y_test.csv
+    params:
+    - model_development.numerical_columns_as_features
+    - model_development.categorical_columns_as_features
+    outs:
+    - ../../data/processed/linear-regression-model.pkl:
+        cache: false
+        
+  model_testing:
+    cmd: python3 model_testing.py ../../data/interim ../../data/processed
+    deps:
+    - model_testing.py
+    - ../../data/interim/X_train.csv
+    - ../../data/interim/X_test.csv
+    - ../../data/interim/y_train.csv
+    - ../../data/interim/y_test.csv
+    - ../../data/processed/linear-regression-model.pkl
+    outs:
+    - ../../data/processed/r_squared_values.json:
+        cache: false
+        
+  model_prediction:
+    cmd: python3 model_prediction.py ../../data/interim ../../data/processed ../../data/raw
+    deps:
+    - model_prediction.py
+    - ../../data/interim/X_train.csv
+    - ../../data/interim/X_test.csv
+    - ../../data/interim/y_train.csv
+    - ../../data/interim/y_test.csv
+    - ../../data/processed/linear-regression-model.pkl
+    outs:
+    - ../../data/processed/prediction_train.csv:
+        cache: false
+    - ../../data/processed/prediction_test.csv:
+        cache: false
