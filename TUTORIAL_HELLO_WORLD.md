@@ -15,7 +15,7 @@ cd work/RD_team/[your_name]
 
 ### 3. If you haven't already, clone the Hello World repo (you'll use your McKinsey email and *GitHub Personal Access Token* for your password)
 ```
-git clone https://github.com/McK-Private/MEW_inv_model_helloworld.git
+git clone https://github.com/McK-Private/MEW_inv_model_hello_world.git
 ```
 
 ### 4. CD into the directory
