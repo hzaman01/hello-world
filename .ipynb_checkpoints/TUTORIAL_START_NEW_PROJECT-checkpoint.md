@@ -111,9 +111,9 @@ git push --set-upstream origin master
 
 
 ## Tips for builiding out pipelines in MEW
-1. dvc.yaml > outs: Outputs need to be unique across pipelines so it's easier to identify specific files vs directories in outs (also can help project navigability)
-2. dvc.yaml > outs > cache: In nearly all cases you should not include the cache: field. By default it's set to True, instructing DVC to track the output files
-3. dvc.yaml > outs > persist: If outs direct to an existing folder, it is better to set persist to true; otherwise the folder will get purged before new files are saved
+1. **dvc.yaml > outs**: Outputs need to be unique across pipelines so it's easier to identify specific files vs directories in outs (also can help project navigability)
+2. **dvc.yaml > outs > cache**: In nearly all cases you should not include the cache: field. By default it's set to True, instructing DVC to track the output files
+3. **dvc.yaml > outs > persist**: If outs direct to an existing folder, it is better to set persist to true; otherwise the folder will get purged before new files are saved
 4. Metrics and plots should be saved in a machine-readable format. This likely means the same plots will need to also be saved as image files for documentation, but by having machine-readable format we ensure metrics and plots are accessible to the UI, Telemetry and future MEW features.
     1. dvc.yaml > outs > metrics: scalar numbers such as AUC, true positive rate, etc. can be saved as a JSON or YAML file. 
     2. dvc.yaml > outs > plots: data series such as AUC curves, loss functions, confusion matrices, etc. can be saved as  JSON, YAML, CSV, or TSV.
