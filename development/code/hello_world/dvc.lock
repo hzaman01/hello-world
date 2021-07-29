@@ -1,0 +1,124 @@
+schema: '2.0'
+stages:
+  data_loading:
+    cmd: python3 data_loading.py ../../data/raw ../../data/interim
+    deps:
+    - path: ../../data/raw
+      md5: 953ab00103bf7c4a78afc13323c126e1.dir
+      size: 3721
+      nfiles: 2
+    - path: data_loading.py
+      md5: a29341f0ecc3bc807a1c6f7a9f6a3be2
+      size: 811
+    params:
+      params.yaml:
+        data_raw.size_cutoff: 10000
+    outs:
+    - path: ../../data/interim/sample_dataset_saved.csv
+      md5: a151f2b20ebdce81d8e97adc915431b7
+      size: 4240
+  data_sampling:
+    cmd: python3 data_sampling.py ../../data/interim ../../data/interim
+    deps:
+    - path: ../../data/interim/sample_dataset_saved.csv
+      md5: a151f2b20ebdce81d8e97adc915431b7
+      size: 4240
+    - path: data_sampling.py
+      md5: e3cbde4c41e562caa46c64cb154abf0f
+      size: 1206
+    params:
+      params.yaml:
+        sampling.test_size: 0.2
+    outs:
+    - path: ../../data/interim/X_test.csv
+      md5: bc5c0b63fc33d6e025b18576c660e57d
+      size: 363
+    - path: ../../data/interim/X_train.csv
+      md5: e556ba1bac9a045b4fa155d8008716dc
+      size: 1449
+    - path: ../../data/interim/y_test.csv
+      md5: dbb9429735e8fc19ce572ba10dbff4e6
+      size: 361
+    - path: ../../data/interim/y_train.csv
+      md5: 80b5f812da0963e24edbdab9dced66ca
+      size: 1467
+  model_training:
+    cmd: python3 model_development.py ../../data/interim ../../data/processed
+    deps:
+    - path: ../../data/interim/X_test.csv
+      md5: bc5c0b63fc33d6e025b18576c660e57d
+      size: 363
+    - path: ../../data/interim/X_train.csv
+      md5: e556ba1bac9a045b4fa155d8008716dc
+      size: 1449
+    - path: ../../data/interim/y_test.csv
+      md5: dbb9429735e8fc19ce572ba10dbff4e6
+      size: 361
+    - path: ../../data/interim/y_train.csv
+      md5: 80b5f812da0963e24edbdab9dced66ca
+      size: 1467
+    - path: model_development.py
+      md5: b5889037e5cf47c4c99b519fb06cc8c6
+      size: 1246
+    params:
+      params.yaml:
+        model_development.categorical_columns_as_features:
+        model_development.numerical_columns_as_features:
+        - X
+    outs:
+    - path: ../../data/processed/linear-regression-model.pkl
+      md5: 8e39574a3317c3456465f622b3857d30
+      size: 481
+  model_prediction:
+    cmd: python3 model_prediction.py ../../data/interim ../../data/processed ../../data/raw
+    deps:
+    - path: ../../data/interim/X_test.csv
+      md5: bc5c0b63fc33d6e025b18576c660e57d
+      size: 363
+    - path: ../../data/interim/X_train.csv
+      md5: e556ba1bac9a045b4fa155d8008716dc
+      size: 1449
+    - path: ../../data/interim/y_test.csv
+      md5: dbb9429735e8fc19ce572ba10dbff4e6
+      size: 361
+    - path: ../../data/interim/y_train.csv
+      md5: 80b5f812da0963e24edbdab9dced66ca
+      size: 1467
+    - path: ../../data/processed/linear-regression-model.pkl
+      md5: 8e39574a3317c3456465f622b3857d30
+      size: 481
+    - path: model_prediction.py
+      md5: 930c4f14fff724b9e0b62574bd058f1f
+      size: 1446
+    outs:
+    - path: ../../data/processed/prediction_test.csv
+      md5: 1f7b6f35f85fa6b2efb79fd2b1de81a4
+      size: 916
+    - path: ../../data/processed/prediction_train.csv
+      md5: 24b1a08cd38991c8e19d8df404df632f
+      size: 3658
+  model_testing:
+    cmd: python3 model_testing.py ../../data/interim ../../data/processed
+    deps:
+    - path: ../../data/interim/X_test.csv
+      md5: bc5c0b63fc33d6e025b18576c660e57d
+      size: 363
+    - path: ../../data/interim/X_train.csv
+      md5: e556ba1bac9a045b4fa155d8008716dc
+      size: 1449
+    - path: ../../data/interim/y_test.csv
+      md5: dbb9429735e8fc19ce572ba10dbff4e6
+      size: 361
+    - path: ../../data/interim/y_train.csv
+      md5: 80b5f812da0963e24edbdab9dced66ca
+      size: 1467
+    - path: ../../data/processed/linear-regression-model.pkl
+      md5: 8e39574a3317c3456465f622b3857d30
+      size: 481
+    - path: model_testing.py
+      md5: f0ac49ef0b20f31861fbeb698f94911b
+      size: 1562
+    outs:
+    - path: ../../data/processed/r_squared_values.json
+      md5: 55b602b4829437ea0e2cd57761a66402
+      size: 82
